@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hr-time — Design Direction Mockups</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; background: #f0f4f8; color: #334155; }
+
+  /* Navigation */
+  .nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; border-bottom: 1px solid #e2e8f0; z-index: 100; padding: 12px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .nav h1 { font-size: 16px; font-weight: 600; color: #0ea5e9; white-space: nowrap; }
+  .nav-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .nav-btn { padding: 6px 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .nav-btn:hover { background: #f0f9ff; border-color: #7dd3fc; }
+  .nav-btn.active { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+
+  /* Mockup Container */
+  .mockup-container { margin-top: 64px; padding: 24px; }
+  .mockup { display: none; }
+  .mockup.active { display: block; }
+  .mockup-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .mockup-desc { font-size: 14px; color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+
+  /* Shared Mockup Styles */
+  .app-frame { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); height: 600px; display: flex; }
+
+  /* Sidebar Nav */
+  .sidebar-nav { width: 56px; display: flex; flex-direction: column; align-items: center; padding: 16px 0; gap: 20px; flex-shrink: 0; }
+  .sidebar-nav .nav-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.2s; }
+
+  /* Todo Panel */
+  .todo-panel { width: 300px; border-right: 1px solid; padding: 20px; overflow-y: auto; flex-shrink: 0; }
+  .todo-panel h2 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .project-group { margin-bottom: 16px; }
+  .project-header { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 6px 0; }
+  .project-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .task-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; margin: 4px 0; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .task-btn { font-size: 11px; padding: 3px 10px; border-radius: 6px; border: none; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+
+  /* Timeline Panel */
+  .timeline-panel { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
+  .timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .timeline-header h2 { font-size: 15px; font-weight: 600; }
+  .time-row { display: flex; align-items: stretch; min-height: 48px; border-top: 1px solid; position: relative; }
+  .time-label { width: 56px; font-size: 11px; padding: 4px 8px 0 0; text-align: right; flex-shrink: 0; }
+  .time-content { flex: 1; position: relative; padding: 2px 0; }
+  .time-block { border-radius: 8px; padding: 8px 12px; margin: 2px 4px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .time-block:hover { transform: translateX(2px); }
+  .time-block .block-time { font-size: 10px; opacity: 0.7; margin-top: 2px; }
+
+  /* Summary Bar */
+  .summary-bar { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; border-top: 1px solid; }
+  .summary-item { display: flex; align-items: center; gap: 6px; }
+  .summary-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Break block */
+  .break-block { border-radius: 8px; padding: 6px 12px; margin: 2px 4px; font-size: 11px; display: flex; align-items: center; gap: 6px; }
+
+  /* Direction-specific styles */
+
+  /* Direction 1: Clean Minimal */
+  .d1 .sidebar-nav { background: #f8fafc; border-right: 1px solid #e2e8f0; }
+  .d1 .sidebar-nav .nav-icon { color: #94a3b8; }
+  .d1 .sidebar-nav .nav-icon.active { background: #f0f9ff; color: #0ea5e9; }
+  .d1 .todo-panel { background: #f8fafc; border-color: #e2e8f0; }
+  .d1 .task-item:hover { background: #f0f9ff; }
+  .d1 .task-btn { background: #e0f2fe; color: #0284c7; }
+  .d1 .task-btn:hover { background: #0ea5e9; color: #fff; }
+  .d1 .timeline-panel { background: #f8fafc; }
+  .d1 .time-row { border-color: #e2e8f0; }
+  .d1 .summary-bar { background: #fff; border-color: #e2e8f0; }
+
+  /* Direction 2: Warm Soft */
+  .d2 .sidebar-nav { background: #fefce8; border-right: 1px solid #fde68a; }
+  .d2 .sidebar-nav .nav-icon { color: #a16207; }
+  .d2 .sidebar-nav .nav-icon.active { background: #fef9c3; color: #ca8a04; }
+  .d2 .todo-panel { background: #fffbeb; border-color: #fde68a; }
+  .d2 .task-item:hover { background: #fef9c3; }
+  .d2 .task-btn { background: #fef3c7; color: #b45309; }
+  .d2 .task-btn:hover { background: #f59e0b; color: #fff; }
+  .d2 .timeline-panel { background: #fffbeb; }
+  .d2 .time-row { border-color: #fde68a; }
+  .d2 .summary-bar { background: #fff; border-color: #fde68a; }
+
+  /* Direction 3: Cool Professional */
+  .d3 .sidebar-nav { background: #1e293b; }
+  .d3 .sidebar-nav .nav-icon { color: #94a3b8; }
+  .d3 .sidebar-nav .nav-icon.active { background: #334155; color: #38bdf8; }
+  .d3 .todo-panel { background: #fff; border-color: #e2e8f0; }
+  .d3 .task-item:hover { background: #f0f9ff; }
+  .d3 .task-btn { background: #dbeafe; color: #1d4ed8; }
+  .d3 .task-btn:hover { background: #3b82f6; color: #fff; }
+  .d3 .timeline-panel { background: #f8fafc; }
+  .d3 .time-row { border-color: #e2e8f0; }
+  .d3 .summary-bar { background: #fff; border-color: #e2e8f0; }
+
+  /* Direction 4: Airy Pastel */
+  .d4 .sidebar-nav { background: #f0f9ff; border-right: 1px solid #bae6fd; }
+  .d4 .sidebar-nav .nav-icon { color: #7dd3fc; }
+  .d4 .sidebar-nav .nav-icon.active { background: #e0f2fe; color: #0ea5e9; }
+  .d4 .todo-panel { background: #f0f9ff; border-color: #bae6fd; }
+  .d4 .task-item { border-radius: 12px; }
+  .d4 .task-item:hover { background: #e0f2fe; }
+  .d4 .task-btn { background: #e0f2fe; color: #0284c7; border-radius: 12px; }
+  .d4 .task-btn:hover { background: #0ea5e9; color: #fff; }
+  .d4 .timeline-panel { background: #f0f9ff; }
+  .d4 .time-row { border-color: #bae6fd; }
+  .d4 .time-block { border-radius: 12px; }
+  .d4 .summary-bar { background: #fff; border-color: #bae6fd; border-radius: 0 0 12px 0; }
+
+  /* Direction 5: Compact Dense */
+  .d5 .sidebar-nav { background: #f1f5f9; width: 48px; padding: 12px 0; gap: 12px; }
+  .d5 .sidebar-nav .nav-icon { width: 32px; height: 32px; font-size: 15px; color: #64748b; border-radius: 6px; }
+  .d5 .sidebar-nav .nav-icon.active { background: #e0f2fe; color: #0ea5e9; }
+  .d5 .todo-panel { width: 260px; background: #fff; border-color: #e2e8f0; padding: 12px; }
+  .d5 .todo-panel h2 { font-size: 13px; margin-bottom: 10px; }
+  .d5 .project-header { font-size: 12px; padding: 4px 0; }
+  .d5 .task-item { padding: 5px 8px; font-size: 12px; border-radius: 6px; margin: 2px 0; }
+  .d5 .task-item:hover { background: #f0f9ff; }
+  .d5 .task-btn { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: #e0f2fe; color: #0284c7; }
+  .d5 .timeline-panel { background: #f8fafc; padding: 12px; }
+  .d5 .time-row { min-height: 36px; border-color: #e2e8f0; }
+  .d5 .time-label { font-size: 10px; width: 44px; }
+  .d5 .time-block { padding: 4px 8px; font-size: 11px; border-radius: 6px; }
+  .d5 .summary-bar { background: #fff; border-color: #e2e8f0; padding: 8px 12px; font-size: 11px; }
+
+  /* Direction 6: Glassmorphism */
+  .d6 { background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #ecfeff 100%); }
+  .d6 .sidebar-nav { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border-right: 1px solid rgba(186,230,253,0.5); }
+  .d6 .sidebar-nav .nav-icon { color: #0ea5e9; }
+  .d6 .sidebar-nav .nav-icon.active { background: rgba(14,165,233,0.15); color: #0284c7; }
+  .d6 .todo-panel { background: rgba(255,255,255,0.5); backdrop-filter: blur(12px); border-color: rgba(186,230,253,0.5); }
+  .d6 .task-item:hover { background: rgba(224,242,254,0.5); }
+  .d6 .task-btn { background: rgba(14,165,233,0.15); color: #0284c7; }
+  .d6 .task-btn:hover { background: #0ea5e9; color: #fff; }
+  .d6 .timeline-panel { background: rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+  .d6 .time-row { border-color: rgba(186,230,253,0.4); }
+  .d6 .time-block { backdrop-filter: blur(4px); }
+  .d6 .summary-bar { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border-color: rgba(186,230,253,0.5); }
+
+  /* Task color variations */
+  .block-blue { background: #dbeafe; color: #1e40af; border-left: 3px solid #3b82f6; }
+  .block-green { background: #dcfce7; color: #166534; border-left: 3px solid #22c55e; }
+  .block-purple { background: #f3e8ff; color: #6b21a8; border-left: 3px solid #a855f7; }
+  .block-orange { background: #ffedd5; color: #9a3412; border-left: 3px solid #f97316; }
+  .block-plan { opacity: 0.65; border-style: dashed; border-left-style: dashed; }
+  .block-break { background: #f1f5f9; color: #64748b; border-left: 3px solid #94a3b8; }
+
+  .d6 .block-blue { background: rgba(219,234,254,0.7); }
+  .d6 .block-green { background: rgba(220,252,231,0.7); }
+  .d6 .block-purple { background: rgba(243,232,255,0.7); }
+  .d6 .block-orange { background: rgba(255,237,213,0.7); }
+  .d6 .block-break { background: rgba(241,245,249,0.7); }
+
+  /* Popover demo */
+  .popover-demo { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); padding: 16px; width: 220px; z-index: 10; }
+  .popover-demo h4 { font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+  .popover-field { margin-bottom: 8px; }
+  .popover-field label { font-size: 11px; color: #64748b; display: block; margin-bottom: 3px; }
+  .popover-select { width: 100%; padding: 6px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; background: #f8fafc; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <h1>hr-time Design Directions</h1>
+  <div class="nav-buttons">
+    <button class="nav-btn active" onclick="showMockup(1)">1. Clean Minimal</button>
+    <button class="nav-btn" onclick="showMockup(2)">2. Warm Soft</button>
+    <button class="nav-btn" onclick="showMockup(3)">3. Cool Pro</button>
+    <button class="nav-btn" onclick="showMockup(4)">4. Airy Pastel</button>
+    <button class="nav-btn" onclick="showMockup(5)">5. Compact Dense</button>
+    <button class="nav-btn" onclick="showMockup(6)">6. Glassmorphism</button>
+  </div>
+</div>
+
+<div class="mockup-container">
+
+  <!-- Direction 1: Clean Minimal -->
+  <div class="mockup active" id="mockup-1">
+    <div class="mockup-title">Direction 1: Clean Minimal</div>
+    <div class="mockup-desc">青みがかった白ベースに水色アクセント。最小限の装飾、広い余白。shadcn/uiのデフォルトに近い清潔感。サイドバーはライトグレー。</div>
+    <div class="app-frame d1">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">今日の予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#94a3b8"></span>▼ 未分類</div>
+          <div class="task-item" style="color:#94a3b8">+ タスクを追加</div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#0ea5e9;cursor:pointer">+ 新しいプロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2>今日 — 3月13日（木）</h2><span style="font-size:12px;color:#0ea5e9">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00 - 11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">11:30</div><div class="time-content"></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break">☕ 休憩<div class="block-time">12:00 - 13:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00 - 14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00 - 17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00 - 18:30（計画）</div></div></div></div>
+        <div class="time-row"><div class="time-label">18:30</div><div class="time-content"></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h（計画）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction 2: Warm Soft -->
+  <div class="mockup" id="mockup-2">
+    <div class="mockup-title">Direction 2: Warm Soft</div>
+    <div class="mockup-desc">暖色系のソフトなトーン。アンバー/イエロー系のアクセント。柔らかく親しみやすい印象。カジュアルさを最大限に表現。</div>
+    <div class="app-frame d2">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">今日の予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#b45309;cursor:pointer">+ 新しいプロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2>今日 — 3月13日（木）</h2><span style="font-size:12px;color:#b45309">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00 - 11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break">☕ 休憩<div class="block-time">12:00 - 13:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00 - 14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00 - 17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00 - 18:30（計画）</div></div></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h（計画）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction 3: Cool Professional -->
+  <div class="mockup" id="mockup-3">
+    <div class="mockup-title">Direction 3: Cool Professional</div>
+    <div class="mockup-desc">ダークサイドバーに白いコンテンツエリア。プロフェッショナルで信頼感のある印象。ブルー系アクセント。SlackやNotionのようなレイアウト。</div>
+    <div class="app-frame d3">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">今日の予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#3b82f6;cursor:pointer">+ 新しいプロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2>今日 — 3月13日（木）</h2><span style="font-size:12px;color:#3b82f6">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00 - 11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break">☕ 休憩<div class="block-time">12:00 - 13:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00 - 14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00 - 17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00 - 18:30（計画）</div></div></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h（計画）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction 4: Airy Pastel -->
+  <div class="mockup" id="mockup-4">
+    <div class="mockup-title">Direction 4: Airy Pastel</div>
+    <div class="mockup-desc">水色ベースの全体的に明るくふんわりした雰囲気。丸みの強い角。パステルトーンが全体に広がる。最もカジュアルで親しみやすい方向性。</div>
+    <div class="app-frame d4">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">今日の予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#0ea5e9;cursor:pointer">+ 新しいプロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2>今日 — 3月13日（木）</h2><span style="font-size:12px;color:#0ea5e9">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00 - 11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break">☕ 休憩<div class="block-time">12:00 - 13:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00 - 14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00 - 17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00 - 18:30（計画）</div></div></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h（計画）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction 5: Compact Dense -->
+  <div class="mockup" id="mockup-5">
+    <div class="mockup-title">Direction 5: Compact Dense</div>
+    <div class="mockup-desc">情報密度を上げたコンパクト方向。サイドバー・余白を削減し、一画面に多くの情報を表示。効率重視ユーザー向け。</div>
+    <div class="app-frame d5">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#0ea5e9;cursor:pointer">+ プロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2 style="font-size:13px">今日 — 3月13日（木）</h2><span style="font-size:11px;color:#0ea5e9">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00-11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break" style="padding:3px 8px;font-size:10px">☕ 休憩 12:00-13:00</div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00-14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00-17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00-18:30（計画）</div></div></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction 6: Glassmorphism -->
+  <div class="mockup" id="mockup-6">
+    <div class="mockup-title">Direction 6: Glassmorphism</div>
+    <div class="mockup-desc">すりガラス風の透明感あるUI。水色〜シアンのグラデーション背景に半透明パネル。モダンで洗練された印象。</div>
+    <div class="app-frame d6">
+      <div class="sidebar-nav">
+        <div class="nav-icon active">📋</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon">⚙️</div>
+      </div>
+      <div class="todo-panel">
+        <h2>タスク</h2>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#3b82f6"></span>▼ 案件A</div>
+          <div class="task-item">設計レビュー <button class="task-btn">今日の予定</button></div>
+          <div class="task-item">API実装 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#22c55e"></span>▼ 案件B</div>
+          <div class="task-item">定例会議 <button class="task-btn">今日の予定</button></div>
+        </div>
+        <div class="project-group">
+          <div class="project-header"><span class="project-dot" style="background:#a855f7"></span>▶ 案件C</div>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#0284c7;cursor:pointer">+ 新しいプロジェクト</div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-header"><h2>今日 — 3月13日（木）</h2><span style="font-size:12px;color:#0284c7">合計: 6.5h</span></div>
+        <div class="time-row"><div class="time-label">10:00</div><div class="time-content"><div class="time-block block-blue">案件A 設計レビュー<div class="block-time">10:00 - 11:30</div></div></div></div>
+        <div class="time-row"><div class="time-label">12:00</div><div class="time-content"><div class="time-block block-break">☕ 休憩<div class="block-time">12:00 - 13:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">13:00</div><div class="time-content"><div class="time-block block-green">案件B 定例会議<div class="block-time">13:00 - 14:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">14:00</div><div class="time-content"><div class="time-block block-blue">案件A API実装<div class="block-time">14:00 - 17:00</div></div></div></div>
+        <div class="time-row"><div class="time-label">17:00</div><div class="time-content"><div class="time-block block-purple block-plan">案件C テスト<div class="block-time">17:00 - 18:30（計画）</div></div></div></div>
+        <div class="summary-bar">
+          <div class="summary-item"><span class="summary-dot" style="background:#3b82f6"></span>案件A: 4.5h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#22c55e"></span>案件B: 1h</div>
+          <div class="summary-item"><span class="summary-dot" style="background:#a855f7"></span>案件C: 1.5h（計画）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showMockup(n) {
+  document.querySelectorAll('.mockup').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mockup-' + n).classList.add('active');
+  document.querySelectorAll('.nav-btn')[n-1].classList.add('active');
+}
+</script>
+</body>
+</html>
