@@ -27,8 +27,11 @@ export function LoginForm() {
 
 	const onSubmit = async (data: SignInFormValues) => {
 		setIsSubmitting(true)
-		await signIn(data.email, data.password)
-		setIsSubmitting(false)
+		try {
+			await signIn(data.email, data.password)
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	return (

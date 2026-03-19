@@ -36,8 +36,11 @@ export function SignupForm() {
 
 	const onSubmit = async (data: SignUpFormValues) => {
 		setIsSubmitting(true)
-		await signUp(data.name, data.email, data.password)
-		setIsSubmitting(false)
+		try {
+			await signUp(data.name, data.email, data.password)
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	return (
