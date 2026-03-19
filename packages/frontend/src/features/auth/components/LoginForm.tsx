@@ -7,8 +7,7 @@ import { Link } from "react-router"
 import type { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { FormField } from "@/components/ui/form-field"
 import { useAuth } from "../hooks/useAuth"
 
 type SignInFormValues = z.infer<typeof signInSchema>
@@ -16,7 +15,6 @@ type SignInFormValues = z.infer<typeof signInSchema>
 export function LoginForm() {
 	const { signIn } = useAuth()
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const [loginError, setLoginError] = useState<string | null>(null)
 
 	const {
 		register,
@@ -29,48 +27,33 @@ export function LoginForm() {
 
 	const onSubmit = async (data: SignInFormValues) => {
 		setIsSubmitting(true)
-		setLoginError(null)
-		const success = await signIn(data.email, data.password)
-		if (!success) {
-			setLoginError("メールアドレスまたはパスワードが正しくありません")
-		}
+		await signIn(data.email, data.password)
 		setIsSubmitting(false)
 	}
 
 	return (
-		<Card className="w-full max-w-md">
+		<Card className="w-full max-w-md p-5">
 			<CardHeader>
 				<CardTitle className="text-2xl">ログイン</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-					{loginError && <p className="text-sm text-destructive">{loginError}</p>}
-
-					<div className="relative pb-5">
-						<Label htmlFor="email">メールアドレス</Label>
-						<Input id="email" type="email" placeholder="mail@example.com" {...register("email")} />
-						{errors.email && (
-							<p className="absolute bottom-0 left-0 text-xs text-destructive">
-								{errors.email.message}
-							</p>
-						)}
-					</div>
-
-					<div className="relative pb-5">
-						<Label htmlFor="password">パスワード</Label>
-						<Input
-							id="password"
-							type="password"
-							placeholder="パスワードを入力"
-							{...register("password")}
-						/>
-						{errors.password && (
-							<p className="absolute bottom-0 left-0 text-xs text-destructive">
-								{errors.password.message}
-							</p>
-						)}
-					</div>
-
+					<FormField
+						id="email"
+						label="メールアドレス"
+						type="email"
+						placeholder="mail@example.com"
+						error={errors.email}
+						{...register("email")}
+					/>
+					<FormField
+						id="password"
+						label="パスワード"
+						type="password"
+						placeholder="パスワードを入力"
+						error={errors.password}
+						{...register("password")}
+					/>
 					<Button type="submit" className="w-full" disabled={!isValid || isSubmitting}>
 						{isSubmitting ? <Loader2 className="animate-spin" /> : "ログイン"}
 					</Button>

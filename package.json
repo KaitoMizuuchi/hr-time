@@ -2,7 +2,8 @@
 	"name": "hr-time",
 	"private": true,
 	"scripts": {
-		"dev": "pnpm --filter @hr-time/backend dev",
+		"dev": "pnpm --filter @hr-time/backend dev & pnpm --filter @hr-time/frontend dev",
+		"dev:backend": "pnpm --filter @hr-time/backend dev",
 		"dev:frontend": "pnpm --filter @hr-time/frontend dev",
 		"build": "pnpm --filter @hr-time/frontend build && cp -r packages/frontend/dist/* packages/backend/public/ && pnpm --filter @hr-time/backend build",
 		"test": "dotenv -e packages/backend/.env -- vitest run",
