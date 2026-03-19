@@ -12,7 +12,7 @@ import { useAuth } from "../hooks/useAuth"
 
 type SignInFormValues = z.infer<typeof signInSchema>
 
-export function LoginForm() {
+export const LoginForm = () => {
 	const { signIn } = useAuth()
 	const [isSubmitting, setIsSubmitting] = useState(false)
 

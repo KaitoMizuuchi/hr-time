@@ -15,6 +15,11 @@ export default [
 		},
 	}),
 	defineConfig({
+		resolve: {
+			alias: {
+				"@/": new URL("./packages/backend/src/", import.meta.url).pathname,
+			},
+		},
 		test: {
 			name: "backend",
 			root: "./packages/backend",

@@ -21,7 +21,7 @@ const signUpFormSchema = signUpSchema
 
 type SignUpFormValues = z.infer<typeof signUpFormSchema>
 
-export function SignupForm() {
+export const SignupForm = () => {
 	const { signUp } = useAuth()
 	const [isSubmitting, setIsSubmitting] = useState(false)
 

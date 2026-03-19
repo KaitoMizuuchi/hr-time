@@ -5,7 +5,7 @@ import { SignupPage } from "@/pages/SignupPage"
 import { TasksPage } from "@/pages/TasksPage"
 import { ProtectedRoute } from "./ProtectedRoute"
 
-export function AppRoutes() {
+export const AppRoutes = () => {
 	return (
 		<Routes>
 			<Route path="/login" element={<LoginPage />} />

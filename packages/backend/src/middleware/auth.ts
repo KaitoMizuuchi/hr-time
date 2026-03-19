@@ -1,8 +1,8 @@
 import { ERROR_CODES } from "@hr-time/shared"
 import type { Context, Next } from "hono"
-import { auth } from "../lib/auth"
+import { auth } from "@/lib/auth"
 
-export async function authMiddleware(c: Context, next: Next) {
+export const authMiddleware = async (c: Context, next: Next) => {
 	const session = await auth.api.getSession({
 		headers: c.req.raw.headers,
 	})

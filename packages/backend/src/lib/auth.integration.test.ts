@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
-import app from "../index"
+import app from "@/index"
 import { prisma } from "./db"
 
 const testEmail = `test-${Date.now()}@example.com`

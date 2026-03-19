@@ -11,14 +11,17 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
 	TOO_MANY_REQUESTS: "リクエストが多すぎます。しばらくしてから再度お試しください",
 }
 
-function getAuthErrorMessage(error: { code?: string; message?: string }, fallback: string): string {
+const getAuthErrorMessage = (
+	error: { code?: string; message?: string },
+	fallback: string,
+): string => {
 	if (error.code && AUTH_ERROR_MESSAGES[error.code]) {
 		return AUTH_ERROR_MESSAGES[error.code]
 	}
 	return fallback
 }
 
-export function useAuth() {
+export const useAuth = () => {
 	const navigate = useNavigate()
 	const { data: session, isPending } = authClient.useSession()
 

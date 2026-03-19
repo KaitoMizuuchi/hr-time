@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 
-export function ProtectedRoute() {
+export const ProtectedRoute = () => {
 	const { isAuthenticated, isPending } = useAuth()
 
 	if (isPending) {

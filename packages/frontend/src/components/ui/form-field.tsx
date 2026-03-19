@@ -8,7 +8,7 @@ type FormFieldProps = ComponentProps<typeof Input> & {
 	error?: FieldError
 }
 
-export function FormField({ label, error, id, ...inputProps }: FormFieldProps) {
+export const FormField = ({ label, error, id, ...inputProps }: FormFieldProps) => {
 	return (
 		<div className="relative space-y-2 pb-5">
 			<Label htmlFor={id}>{label}</Label>
