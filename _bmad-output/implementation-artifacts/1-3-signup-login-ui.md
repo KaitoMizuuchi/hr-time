@@ -1,6 +1,6 @@
 # Story 1.3: サインアップ・ログインUI
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -24,60 +24,55 @@ so that アプリにアクセスして利用を開始できる.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: shadcn/ui初期化 + Tailwind CSS設定 (AC: #10, #11)
-  - [ ] `pnpm dlx shadcn@latest init`をfrontendパッケージで実行
-  - [ ] Tailwind CSSのテーマカスタマイズ（slate-50背景、sky-400〜500アクセント）
-  - [ ] shadcn/uiコンポーネント追加: Button, Input, Label, Card, Toast（Sonner）, Form
-  - [ ] `index.css`にTailwind CSSディレクティブ設定
+- [x] Task 1: shadcn/ui初期化 + Tailwind CSS設定 (AC: #10, #11)
+  - [x] Tailwind CSS v4 + @tailwindcss/viteプラグイン設定
+  - [x] shadcn/ui初期化（Button, Input, Label, Card, Sonner）
+  - [x] Clean Minimalカラーカスタマイズ（slate系背景、sky-400〜500アクセント）
+  - [x] biome.jsonにtailwindDirectives: true追加
+  - [x] .vscode/settings.jsonでCSS unknownAtRules警告抑制
+  - [x] FormFieldコンポーネント作成（Label + Input + エラーメッセージ）
+  - [x] Toaster（Sonner）をtop-center配置、エラー/成功/警告の色分け
 
-- [ ] Task 2: Hono RPCクライアント設定 (AC: #7)
-  - [ ] `pnpm add hono --filter @hr-time/frontend`（hc用）
-  - [ ] `packages/frontend/src/lib/apiClient.ts` — `hc<AppType>`でHono RPCクライアント作成
-  - [ ] バックエンドの`AppType`を`import type`で参照（devDependencies経由、ランタイム依存なし）
+- [x] Task 2: Hono RPCクライアント設定 (AC: #7)
+  - [x] hono追加、`lib/apiClient.ts`でhc<AppType>クライアント作成
+  - [x] backend package.jsonにmain/types追加で型解決
 
-- [ ] Task 3: TanStack Query設定 (AC: #8)
-  - [ ] `pnpm add @tanstack/react-query --filter @hr-time/frontend`
-  - [ ] `packages/frontend/src/lib/queryClient.ts` — QueryClient作成、グローバルエラーハンドラー（401→ログインリダイレクト）
-  - [ ] `main.tsx`に`QueryClientProvider`をラップ
+- [x] Task 3: TanStack Query設定 (AC: #8)
+  - [x] @tanstack/react-query追加
+  - [x] `lib/queryClient.ts`でグローバルエラーハンドラー（401→リダイレクト）設定
+  - [x] main.tsxにQueryClientProviderラップ
 
-- [ ] Task 4: React Router設定 (AC: #1)
-  - [ ] `pnpm add react-router --filter @hr-time/frontend`
-  - [ ] `packages/frontend/src/routes/index.tsx` — ルート定義（`/login`, `/signup`, `/tasks`, `/dashboard`）
-  - [ ] `App.tsx`に`BrowserRouter` + `Routes`設定
-  - [ ] 未認証時は全保護ルートからログイン画面にリダイレクト
+- [x] Task 4: React Router設定 (AC: #1)
+  - [x] react-router追加
+  - [x] ルート定義（/login, /signup, /tasks, /dashboard）
+  - [x] App.tsxにBrowserRouter + AppRoutes + Toaster設定
 
-- [ ] Task 5: 認証フック + Better Authクライアント (AC: #1, #3, #5)
-  - [ ] `pnpm add better-auth --filter @hr-time/frontend`（クライアントSDK用）
-  - [ ] `packages/frontend/src/lib/authClient.ts` — Better Authクライアント設定（`createAuthClient`）
-  - [ ] `packages/frontend/src/features/auth/hooks/useAuth.ts` — サインアップ・サインイン・サインアウト・セッション取得のカスタムフック
+- [x] Task 5: 認証フック + Better Authクライアント (AC: #1, #3, #5)
+  - [x] better-auth追加（クライアントSDK）
+  - [x] `lib/authClient.ts`でcreateAuthClient設定（baseURL: window.location.origin）
+  - [x] `features/auth/hooks/useAuth.ts`でsignUp/signIn/signOut/session管理
+  - [x] エラーメッセージの日本語マッピング（AUTH_ERROR_MESSAGES）
+  - [x] backend auth.tsにtrustedOrigins追加（開発時CORS対応）
 
-- [ ] Task 6: サインアップ画面 (AC: #2, #3, #4)
-  - [ ] `packages/frontend/src/features/auth/components/SignupForm.tsx`
-  - [ ] react-hook-form + zodResolver + signUpSchema（shared）でバリデーション
-  - [ ] 確認パスワードフィールド追加（zodのrefineで一致チェック）
-  - [ ] フィールド: 表示名、メール、パスワード、確認パスワード
-  - [ ] バリデーションエラーはフィールド直下にabsolute配置で赤テキスト表示（UX-DR19）。エラー表示で後続要素がずれないようにする
-  - [ ] バリデーション通過まで送信ボタン非アクティブ
-  - [ ] API呼び出し中はボタンdisabled + スピナー表示（UX-DR20）
-  - [ ] 成功時: タスク画面（`/tasks`）にリダイレクト
-  - [ ] エラー時: Error Toast表示
+- [x] Task 6: サインアップ画面 (AC: #2, #3, #4)
+  - [x] SignupForm.tsx — react-hook-form + zodResolver + signUpFormSchema
+  - [x] 確認パスワードフィールド（refineで一致チェック）
+  - [x] absoluteエラーメッセージ、disabled+スピナー、Toast通知
 
-- [ ] Task 7: ログイン画面 (AC: #1, #5, #6)
-  - [ ] `packages/frontend/src/features/auth/components/LoginForm.tsx`
-  - [ ] react-hook-form + zodResolver + signInSchema（shared）でバリデーション
-  - [ ] フィールド: メール、パスワード
-  - [ ] 「サインアップ」リンクでサインアップ画面に遷移
-  - [ ] 成功時: タスク画面（`/tasks`）にリダイレクト
-  - [ ] エラー時: エラーメッセージ表示（再入力を促す）
-  - [ ] API呼び出し中はボタンdisabled + スピナー
+- [x] Task 7: ログイン画面 (AC: #1, #5, #6)
+  - [x] LoginForm.tsx — react-hook-form + zodResolver + signInSchema
+  - [x] エラー時Toast表示（日本語）、disabled+スピナー
 
-- [ ] Task 8: ページコンポーネント + 保護ルート (AC: #1)
-  - [ ] `packages/frontend/src/pages/LoginPage.tsx` — LoginFormを配置するページ
-  - [ ] `packages/frontend/src/pages/SignupPage.tsx` — SignupFormを配置するページ
-  - [ ] `packages/frontend/src/pages/TasksPage.tsx` — 空のプレースホルダー（Story 2.1で実装）
-  - [ ] `packages/frontend/src/pages/DashboardPage.tsx` — 空のプレースホルダー（Story 4.1で実装）
-  - [ ] `packages/frontend/src/routes/ProtectedRoute.tsx` — 認証状態チェック、未認証ならログインにリダイレクト
-  - [ ] `/tasks`, `/dashboard`を保護ルートでラップ
+- [x] Task 8: ページコンポーネント + 保護ルート (AC: #1)
+  - [x] LoginPage, SignupPage, TasksPage（placeholder）, DashboardPage（placeholder）
+  - [x] ProtectedRoute — useAuthで認証チェック、未認証→/loginリダイレクト
+
+- [x] Task 9: テスト
+  - [x] LoginForm.test.tsx — 4テスト（表示、disabled、バリデーション、リンク）
+  - [x] SignupForm.test.tsx — 4テスト（表示、disabled、パスワード不一致、リンク）
+  - [x] vitest v3にダウングレード（v4はfrontendの@/エイリアス非対応）
+  - [x] vitest.workspace.tsでfrontendにresolve.alias設定
+  - [x] 全7ファイル17テストパス
 
 - [ ] Task 9: テスト
   - [ ] LoginForm単体テスト — バリデーションエラー表示、ボタン非アクティブ状態
@@ -307,12 +302,69 @@ packages/frontend/
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Opus 4.6 (1M context)
 
 ### Debug Log References
 
+- shadcn/ui init: tsconfig.jsonにbaseUrl+pathsが必要（tsconfig.app.jsonだけでは不足）
+- Tailwind CSS v4: biome.jsonに`tailwindDirectives: true`が必要（@apply解析用）
+- Better Auth client: baseURLに相対パス不可 → `window.location.origin`を使用
+- Better Auth CORS: 開発時はfrontend(5173)とbackend(3000)のポート不一致 → `trustedOrigins`追加
+- vitest v4: frontendの`@/`エイリアスが全く解決不可（forks/vmThreads/vite-tsconfig-paths全て失敗）
+- vitest v3: `resolve.alias` + `new URL("./src/", import.meta.url).pathname`で`@/`解決可能
+- shadcn/ui Button: CardTitleのテキストとボタンのテキストが一致する場合、getByRoleで複数マッチ → type="submit"で絞り込み
+
 ### Completion Notes List
+
+- shadcn/ui + Tailwind CSS v4初期化、Clean Minimalカラー適用
+- Hono RPCクライアント（hc<AppType>）設定
+- TanStack Query + グローバル401ハンドラー設定
+- React Router（/login, /signup, /tasks, /dashboard）+ ProtectedRoute
+- Better Authクライアント + useAuthフック（日本語エラーマッピング付き）
+- LoginForm / SignupForm（react-hook-form + zod + absoluteエラー表示）
+- FormFieldコンポーネント（再利用可能なLabel+Input+Error）
+- Toaster: top-center配置、success/warning/errorの色分け
+- pnpm devで両サーバー同時起動
+- vitest v3ダウングレード + @/エイリアス解決
+- 全7ファイル17テストパス
 
 ### Change Log
 
+- 2026-03-19: Story 1.3 実装完了 — サインアップ・ログインUI
+
 ### File List
+
+- .vscode/settings.json (new)
+- biome.json (modify — css tailwindDirectives追加)
+- vitest.workspace.ts (modify — frontend resolve.alias追加)
+- package.json (modify — dev両サーバー同時起動、vitest v3、vite-tsconfig-paths追加)
+- packages/frontend/package.json (modify — 多数の依存追加)
+- packages/frontend/components.json (new — shadcn/ui設定)
+- packages/frontend/tsconfig.json (modify — baseUrl+paths追加)
+- packages/frontend/vite.config.ts (modify — tailwindcss plugin追加)
+- packages/frontend/src/index.css (modify — Tailwind CSS v4 + Clean Minimalカラー)
+- packages/frontend/src/App.tsx (modify — BrowserRouter + AppRoutes + Toaster)
+- packages/frontend/src/main.tsx (modify — QueryClientProvider追加)
+- packages/frontend/src/lib/utils/cn.ts (new — shadcn用cnユーティリティ)
+- packages/frontend/src/lib/apiClient.ts (new — Hono RPCクライアント)
+- packages/frontend/src/lib/queryClient.ts (new — TanStack Query設定)
+- packages/frontend/src/lib/authClient.ts (new — Better Authクライアント)
+- packages/frontend/src/components/ui/button.tsx (new — shadcn)
+- packages/frontend/src/components/ui/input.tsx (new — shadcn)
+- packages/frontend/src/components/ui/label.tsx (new — shadcn)
+- packages/frontend/src/components/ui/card.tsx (new — shadcn)
+- packages/frontend/src/components/ui/toaster.tsx (new — Sonner、旧sonner.tsx)
+- packages/frontend/src/components/ui/form-field.tsx (new — FormField共通コンポーネント)
+- packages/frontend/src/features/auth/hooks/useAuth.ts (new)
+- packages/frontend/src/features/auth/components/LoginForm.tsx (new)
+- packages/frontend/src/features/auth/components/LoginForm.test.tsx (new)
+- packages/frontend/src/features/auth/components/SignupForm.tsx (new)
+- packages/frontend/src/features/auth/components/SignupForm.test.tsx (new)
+- packages/frontend/src/pages/LoginPage.tsx (new)
+- packages/frontend/src/pages/SignupPage.tsx (new)
+- packages/frontend/src/pages/TasksPage.tsx (new — placeholder)
+- packages/frontend/src/pages/DashboardPage.tsx (new — placeholder)
+- packages/frontend/src/routes/index.tsx (new)
+- packages/frontend/src/routes/ProtectedRoute.tsx (new)
+- packages/backend/package.json (modify — main/types追加)
+- packages/backend/src/lib/auth.ts (modify — trustedOrigins追加)
