@@ -44,7 +44,7 @@ story_location: _bmad-output/implementation-artifacts
 development_status:
   # Epic 1: 認証とアプリ基盤
   epic-1: in-progress
-  1-1-project-base-setup: ready-for-dev
+  1-1-project-base-setup: done
   1-2-database-and-auth-backend: backlog
   1-3-signup-login-ui: backlog
   1-4-app-shell-and-navigation: backlog

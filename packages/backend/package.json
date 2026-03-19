@@ -1,0 +1,20 @@
+{
+	"name": "@hr-time/backend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "bun run --hot src/index.ts",
+		"build": "bun build src/index.ts --outdir dist --target bun",
+		"db:migrate": "prisma migrate dev",
+		"db:studio": "prisma studio"
+	},
+	"dependencies": {
+		"@hr-time/shared": "workspace:*",
+		"hono": "^4.12.8"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"typescript": "~5.9.3"
+	}
+}

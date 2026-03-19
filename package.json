@@ -1,0 +1,26 @@
+{
+	"name": "hr-time",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm --filter @hr-time/backend dev",
+		"dev:frontend": "pnpm --filter @hr-time/frontend dev",
+		"build": "pnpm --filter @hr-time/frontend build && cp -r packages/frontend/dist/* packages/backend/public/ && pnpm --filter @hr-time/backend build",
+		"test": "vitest run",
+		"db:migrate": "pnpm --filter @hr-time/backend db:migrate",
+		"typecheck": "pnpm -r run --if-present typecheck",
+		"db:studio": "pnpm --filter @hr-time/backend db:studio",
+		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,js,jsx,json,css}": "biome check --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.8",
+		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/react": "^16.3.2",
+		"husky": "^9.1.7",
+		"jsdom": "^29.0.0",
+		"lint-staged": "^16.4.0",
+		"vitest": "^4.1.0"
+	}
+}

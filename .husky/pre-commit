@@ -1,0 +1,4 @@
+pnpm exec lint-staged
+pnpm --filter @hr-time/frontend exec tsc --noEmit
+pnpm --filter @hr-time/backend exec tsc --noEmit
+pnpm --filter @hr-time/shared exec tsc --noEmit

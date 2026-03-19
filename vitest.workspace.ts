@@ -1,0 +1,26 @@
+import { defineConfig } from "vitest/config"
+
+export default [
+	defineConfig({
+		test: {
+			name: "frontend",
+			root: "./packages/frontend",
+			environment: "jsdom",
+			include: ["src/**/*.test.{ts,tsx}"],
+		},
+	}),
+	defineConfig({
+		test: {
+			name: "backend",
+			root: "./packages/backend",
+			include: ["src/**/*.test.ts"],
+		},
+	}),
+	defineConfig({
+		test: {
+			name: "shared",
+			root: "./packages/shared",
+			include: ["src/**/*.test.ts"],
+		},
+	}),
+]
