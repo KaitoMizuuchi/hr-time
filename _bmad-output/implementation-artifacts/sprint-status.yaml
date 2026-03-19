@@ -45,7 +45,7 @@ development_status:
   # Epic 1: 認証とアプリ基盤
   epic-1: in-progress
   1-1-project-base-setup: done
-  1-2-database-and-auth-backend: ready-for-dev
+  1-2-database-and-auth-backend: done
   1-3-signup-login-ui: backlog
   1-4-app-shell-and-navigation: backlog
   epic-1-retrospective: optional

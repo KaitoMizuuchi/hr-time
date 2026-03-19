@@ -11,10 +11,17 @@
 	},
 	"dependencies": {
 		"@hr-time/shared": "workspace:*",
-		"hono": "^4.12.8"
+		"@prisma/adapter-pg": "^7.5.0",
+		"@prisma/client": "^7.5.0",
+		"better-auth": "^1.5.5",
+		"dotenv": "^17.3.1",
+		"hono": "^4.12.8",
+		"pg": "^8.20.0",
+		"prisma": "^7.5.0"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
+		"@types/pg": "^8.18.0",
 		"typescript": "~5.9.3"
 	}
 }
