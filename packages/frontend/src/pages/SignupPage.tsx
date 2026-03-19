@@ -1,7 +1,9 @@
+import { SignupForm } from "@/features/auth/components/SignupForm"
+
 export function SignupPage() {
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background">
-			<p>サインアップ画面（Task 6で実装）</p>
+			<SignupForm />
 		</div>
 	)
 }
