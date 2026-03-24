@@ -51,8 +51,8 @@ development_status:
   epic-1-retrospective: optional
 
   # Epic 2: タスク・プロジェクト管理
-  epic-2: backlog
-  2-1-project-crud-backend-frontend: backlog
+  epic-2: in-progress
+  2-1-project-crud-backend-frontend: review
   2-2-task-crud-project-grouping: backlog
   2-3-tag-management-auto-assignment: backlog
   2-4-task-completion-management: backlog

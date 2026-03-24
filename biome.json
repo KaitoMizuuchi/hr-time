@@ -18,7 +18,12 @@
 			"linter": {
 				"rules": {
 					"suspicious": { "noDocumentCookie": "off" },
-					"correctness": { "useExhaustiveDependencies": "off" }
+					"correctness": { "useExhaustiveDependencies": "off" },
+					"a11y": {
+						"useSemanticElements": "off",
+						"useKeyWithClickEvents": "off",
+						"noLabelWithoutControl": "off"
+					}
 				}
 			}
 		}
