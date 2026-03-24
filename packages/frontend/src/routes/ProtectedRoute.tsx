@@ -1,4 +1,5 @@
-import { Navigate, Outlet } from "react-router"
+import { Navigate } from "react-router"
+import { AppShell } from "@/components/layout/AppShell"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 
 export const ProtectedRoute = () => {
@@ -16,5 +17,5 @@ export const ProtectedRoute = () => {
 		return <Navigate to="/login" replace />
 	}
 
-	return <Outlet />
+	return <AppShell />
 }

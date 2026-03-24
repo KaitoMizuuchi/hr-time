@@ -12,6 +12,17 @@
 			"recommended": true
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["packages/frontend/src/components/ui/**", "packages/frontend/src/hooks/**"],
+			"linter": {
+				"rules": {
+					"suspicious": { "noDocumentCookie": "off" },
+					"correctness": { "useExhaustiveDependencies": "off" }
+				}
+			}
+		}
+	],
 	"css": {
 		"parser": {
 			"cssModules": false,

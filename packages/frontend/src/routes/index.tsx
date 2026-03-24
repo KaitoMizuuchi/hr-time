@@ -13,6 +13,7 @@ export const AppRoutes = () => {
 			<Route element={<ProtectedRoute />}>
 				<Route path="/tasks" element={<TasksPage />} />
 				<Route path="/dashboard" element={<DashboardPage />} />
+				<Route path="/" element={<Navigate to="/tasks" replace />} />
 			</Route>
 			<Route path="*" element={<Navigate to="/login" replace />} />
 		</Routes>
